@@ -19,16 +19,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.greenwizard.R
 import com.example.greenwizard.model.Report
-import com.example.greenwizard.viewmodel.ReportViewModel
+import com.example.greenwizard.viewmodel.LocationViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class UpdateReport : Fragment() {
 
-    private lateinit var mNewsViewModel: ReportViewModel
+    private lateinit var mNewsViewModel: LocationViewModel
 
     private val args by navArgs<UpdateReportArgs>()
     // Initialize ViewModel
-    private val newsViewModel: ReportViewModel by viewModels()
+    private val newsViewModel: LocationViewModel by viewModels()
 
     // Initialize ImageView for displaying the selected image
     private lateinit var updateImg: ImageView
@@ -45,8 +45,9 @@ class UpdateReport : Fragment() {
         val view = inflater.inflate(R.layout.fragment_update_report, container, false)
 
         // Initialize mNewsViewModel
-        mNewsViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
+        mNewsViewModel = ViewModelProvider(this).get(LocationViewModel::class.java)
 
+        val updateaddress = view.findViewById<EditText>(R.id.editTextAddress)
         val updatedescription = view.findViewById<EditText>(R.id.editdescription)
         val updatetypeofWaste = view.findViewById<EditText>(R.id.edittypeofWaste)
         val updateBtn = view.findViewById<Button>(R.id.updateBtn)
@@ -55,6 +56,7 @@ class UpdateReport : Fragment() {
         val updateStatusBtn = view.findViewById<Button>(R.id.updateStatusBtn)
 
         // Load the existing data
+        updateaddress.setText(args.currentReport.address)
         updatedescription.setText(args.currentReport.description)
         updatetypeofWaste.setText(args.currentReport.typeofWaste)
 
@@ -80,20 +82,21 @@ class UpdateReport : Fragment() {
         }
 
         updateBtn.setOnClickListener() {
+
+            val location = updateaddress.text.toString()
             val description = updatedescription.text.toString()
             val typeofWaste = updatetypeofWaste.text.toString()
-            val status = "Completed"
 
             if (inputCheck(description, typeofWaste)) {
                 // Check if an image is selected
                 val imagePath = selectedImageUri?.toString() // Get the selected image URI as a string
                 // Create news Object
-                val updatedNews = Report(args.currentReport.id, description, typeofWaste, System.currentTimeMillis(), status, imagePath ?: "")
+                val updatedNews = Report(args.currentReport.id, location, description, typeofWaste, System.currentTimeMillis(), imagePath ?: "")
                 // Update data to ViewModel
                 newsViewModel.updateReport(updatedNews)
                 Toast.makeText(requireContext(), "Successfully Updated", Toast.LENGTH_LONG).show()
                 // Navigate Back
-                findNavController().navigate(R.id.action_updateNews_to_listNews)
+                findNavController().navigate(R.id.action_updateReport_to_listReport)
             } else {
                 Toast.makeText(requireContext(), "Please Fill Out All Fields", Toast.LENGTH_LONG).show()
             }
@@ -109,7 +112,7 @@ class UpdateReport : Fragment() {
                     "Successfully Removed: ${args.currentReport.description}",
                     Toast.LENGTH_LONG
                 ).show()
-                findNavController().navigate(R.id.action_updateNews_to_listNews)
+                findNavController().navigate(R.id.action_updateReport_to_listReport)
             }
             builder.setNegativeButton("No") { _, _ ->
                 // Do nothing or dismiss the dialog
@@ -126,16 +129,16 @@ class UpdateReport : Fragment() {
                 mNewsViewModel.deleteReport(args.currentReport)
                 Toast.makeText(
                     requireContext(),
-                    "Successfully Removed: ${args.currentReport.description}",
+                    "Successfully Update: ${args.currentReport.description}",
                     Toast.LENGTH_LONG
                 ).show()
-                findNavController().navigate(R.id.action_updateNews_to_listNews)
+                findNavController().navigate(R.id.action_updateReport_to_listReport)
             }
             builder.setNegativeButton("No") { _, _ ->
                 // Do nothing or dismiss the dialog
             }
-            builder.setTitle("Delete ${args.currentReport.description}?")
-            builder.setMessage("Are you sure you want to delete ${args.currentReport.description}?")
+            builder.setTitle("Update status ${args.currentReport.description}?")
+            builder.setMessage("Are you sure you want to update the status of ${args.currentReport.description}?")
             builder.create().show()
         }
 

@@ -16,12 +16,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.greenwizard.R
 import com.example.greenwizard.model.Report
-import com.example.greenwizard.viewmodel.ReportViewModel
+import com.example.greenwizard.viewmodel.LocationViewModel
 
 class addReport : Fragment() {
 
     // Initialize ViewModel
-    private val reportViewModel: ReportViewModel by viewModels()
+    private val locationViewModel: LocationViewModel by viewModels()
 
     // Initialize ImageView for displaying the selected image
     private lateinit var imageView: ImageView
@@ -35,6 +35,7 @@ class addReport : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add_report, container, false)
 
         val addBtn = view.findViewById<Button>(R.id.addBtn)
+        val editAddress = view.findViewById<EditText>(R.id.editTextAddress)
         val editdescription = view.findViewById<EditText>(R.id.editdescription)
         val edittypeofWaste = view.findViewById<EditText>(R.id.edittypeofWaste)
         val addImg = view.findViewById<ImageView>(R.id.imageView) // Initialize your ImageView
@@ -55,6 +56,7 @@ class addReport : Fragment() {
         }
 
         addBtn.setOnClickListener {
+            val location = editAddress.text.toString()
             val description = editdescription.text.toString()
             val typeofWaste = edittypeofWaste.text.toString()
             val status = "new"
@@ -63,12 +65,12 @@ class addReport : Fragment() {
                 // Check if an image is selected
                 val imagePath = selectedImageUri?.toString() // Get the selected image URI as a string
                 // Create news Object
-                val report = Report(description, typeofWaste,status,imagePath ?: "") // Assuming 'id' is an auto-generated primary key // Pass imagePath as the third parameter
+                val report = Report(location,description, typeofWaste,status,imagePath ?: "") // Assuming 'id' is an auto-generated primary key // Pass imagePath as the third parameter
                 // Add data to ViewModel
-                reportViewModel.addReport(report)
+                locationViewModel.addReport(report)
                 Toast.makeText(requireContext(), "Successfully Added", Toast.LENGTH_LONG).show()
                 // Navigate Back
-                findNavController().navigate(R.id.action_addNews_to_listNews)
+                findNavController().navigate(R.id.action_addReport_to_listReport)
             } else {
                 Toast.makeText(requireContext(), "Please Fill Out All Fields", Toast.LENGTH_LONG).show()
             }

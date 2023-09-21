@@ -20,7 +20,7 @@ class ReportAdapter : RecyclerView.Adapter<ReportAdapter.MyViewHolder>() {
         // Define your TextViews here
         val idView: TextView = itemView.findViewById(R.id.idView)
         val titleView: TextView = itemView.findViewById(R.id.descriptionView)
-        val dateView: TextView = itemView.findViewById(R.id.dateView)
+        val titlestatus: TextView = itemView.findViewById(R.id.statusView)
 
         val rowLayout: ConstraintLayout = itemView.findViewById(R.id.rowLayout)
     }
@@ -39,13 +39,10 @@ class ReportAdapter : RecyclerView.Adapter<ReportAdapter.MyViewHolder>() {
         val currentItem = reportList[position]
         holder.idView.text = currentItem.id.toString()
         holder.titleView.text = currentItem.description
-
-        // Format the timestamp to a readable date string
-        val formattedDate = SimpleDateFormat("yyyy-MM-dd").format(Date(currentItem.date))
-        holder.dateView.text = formattedDate
+        holder.titlestatus.text = currentItem.status
 
         holder.rowLayout.setOnClickListener{
-            val action = listReportDirections.actionListNewsToUpdateNews(currentItem)
+            val action = listReportDirections.actionListReportToUpdateReport(currentItem)
             holder.itemView.findNavController().navigate(action)
         }
 

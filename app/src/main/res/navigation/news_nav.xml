@@ -2,41 +2,41 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/news_nav"
+    android:id="@+id/Report_nav"
     app:startDestination="@id/listReport">
 
     <fragment
         android:id="@+id/listReport"
         android:name="com.example.greenwizard.fragments.list.listReport"
-        android:label="News"
+        android:label="Report"
         app:navGraph="@navigation/news_nav"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_list_report" >
         <action
-            android:id="@+id/action_listNews_to_addNews"
+            android:id="@+id/action_listReport_to_addReport"
             app:destination="@id/addReport" />
         <action
-            android:id="@+id/action_listNews_to_updateNews"
+            android:id="@+id/action_listReport_to_updateReport"
             app:destination="@id/updateReport" />
     </fragment>
     <fragment
         android:id="@+id/addReport"
         android:name="com.example.greenwizard.fragments.add.addReport"
-        android:label="Add News"
+        android:label="Add Report"
         app:navGraph="@navigation/news_nav"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_add_report" >
         <action
-            android:id="@+id/action_addNews_to_listNews"
+            android:id="@+id/action_addReport_to_listReport"
             app:destination="@id/listReport" />
     </fragment>
     <fragment
         android:id="@+id/updateReport"
         android:name="com.example.greenwizard.fragments.update.UpdateReport"
-        android:label="Update News"
+        android:label="Update Report"
         tools:layout="@layout/fragment_update_report" >
         <action
-            android:id="@+id/action_updateNews_to_listNews"
+            android:id="@+id/action_updateReport_to_listReport"
             app:destination="@id/listReport" />
         <argument
             android:name="currentReport"

@@ -11,13 +11,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.greenwizard.R
-import com.example.greenwizard.viewmodel.ReportViewModel
+import com.example.greenwizard.viewmodel.LocationViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class listReport : Fragment() {
 
-    private lateinit var mNewsViewModel: ReportViewModel
+    private lateinit var mLocationViewModel: LocationViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +25,6 @@ class listReport : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_list_report, container, false)
-        
 
         val floatingActionBtn = view.findViewById<FloatingActionButton>(R.id.floatingActionBtn)
 
@@ -36,13 +35,13 @@ class listReport : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // NewsViewModel
-        mNewsViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
-        mNewsViewModel.readAllData.observe(viewLifecycleOwner, Observer { newsList ->
-            adapter.setData(newsList)
+        mLocationViewModel = ViewModelProvider(this).get(LocationViewModel::class.java)
+        mLocationViewModel.readAllData.observe(viewLifecycleOwner, Observer { reportList ->
+            adapter.setData(reportList)
         })
 
         floatingActionBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_listNews_to_addNews)
+            findNavController().navigate(R.id.action_listReport_to_addReport)
         }
 
         return view
