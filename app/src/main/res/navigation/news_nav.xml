@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/news_nav"
+    app:startDestination="@id/listReport">
+
+    <fragment
+        android:id="@+id/listReport"
+        android:name="com.example.greenwizard.fragments.list.listReport"
+        android:label="News"
+        app:navGraph="@navigation/news_nav"
+        app:defaultNavHost="true"
+        tools:layout="@layout/fragment_list_report" >
+        <action
+            android:id="@+id/action_listNews_to_addNews"
+            app:destination="@id/addReport" />
+        <action
+            android:id="@+id/action_listNews_to_updateNews"
+            app:destination="@id/updateReport" />
+    </fragment>
+    <fragment
+        android:id="@+id/addReport"
+        android:name="com.example.greenwizard.fragments.add.addReport"
+        android:label="Add News"
+        app:navGraph="@navigation/news_nav"
+        app:defaultNavHost="true"
+        tools:layout="@layout/fragment_add_report" >
+        <action
+            android:id="@+id/action_addNews_to_listNews"
+            app:destination="@id/listReport" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateReport"
+        android:name="com.example.greenwizard.fragments.update.UpdateReport"
+        android:label="Update News"
+        tools:layout="@layout/fragment_update_report" >
+        <action
+            android:id="@+id/action_updateNews_to_listNews"
+            app:destination="@id/listReport" />
+        <argument
+            android:name="currentReport"
+            app:argType="com.example.greenwizard.model.Report" />
+    </fragment>
+</navigation>
