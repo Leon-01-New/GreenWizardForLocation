@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Report_nav"
-    app:startDestination="@id/listReport">
+    app:startDestination="@id/locationSelectionFragment">
 
     <fragment
         android:id="@+id/listReport"
@@ -42,4 +42,19 @@
             android:name="currentReport"
             app:argType="com.example.greenwizard.model.Report" />
     </fragment>
+    <fragment
+        android:id="@+id/locationSelectionFragment"
+        android:name="com.example.greenwizard.LocationSelectionFragment"
+        android:label="LocationSelectionFragment" >
+        <action
+            android:id="@+id/action_locationSelectionFragment_to_listReport"
+            app:destination="@id/listReport" />
+        <action
+            android:id="@+id/action_locationSelectionFragment_to_listRecycle"
+            app:destination="@id/listRecycle" />
+    </fragment>
+    <fragment
+        android:id="@+id/listRecycle"
+        android:name="com.example.greenwizard.fragments.list.listRecycle"
+        android:label="listRecycle" />
 </navigation>
