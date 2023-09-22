@@ -56,5 +56,31 @@
     <fragment
         android:id="@+id/listRecycle"
         android:name="com.example.greenwizard.fragments.list.listRecycle"
-        android:label="listRecycle" />
+        android:label="listRecycle" >
+        <action
+            android:id="@+id/action_listRecycle_to_addRecycleFragment"
+            app:destination="@id/addRecycleFragment" />
+        <action
+            android:id="@+id/action_listRecycle_to_updateRecycleFragment"
+            app:destination="@id/updateRecycleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addRecycleFragment"
+        android:name="com.example.greenwizard.fragments.add.AddRecycleFragment"
+        android:label="AddRecycleFragment" >
+        <action
+            android:id="@+id/action_addRecycleFragment_to_listRecycle"
+            app:destination="@id/listRecycle" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateRecycleFragment"
+        android:name="com.example.greenwizard.fragments.update.UpdateRecycleFragment"
+        android:label="UpdateRecycleFragment" >
+        <action
+            android:id="@+id/action_updateRecycleFragment_to_listRecycle"
+            app:destination="@id/listRecycle" />
+        <argument
+            android:name="currentRecycle"
+            app:argType="com.example.greenwizard.model.RecyclePoint" />
+    </fragment>
 </navigation>

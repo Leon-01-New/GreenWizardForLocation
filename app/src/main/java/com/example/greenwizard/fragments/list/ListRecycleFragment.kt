@@ -26,6 +26,25 @@ class listRecycle : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_list_recycle, container, false)
 
+        val floatingActionBtn = view.findViewById<FloatingActionButton>(R.id.floatingActionBtn)
+
+        // RecyclerView
+        val adapter = RecycleAdapter()
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycleView)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // NewsViewModel
+        mLocationViewModel = ViewModelProvider(this).get(LocationViewModel::class.java)
+        mLocationViewModel.readAllRecycleData.observe(viewLifecycleOwner, Observer { recycleList ->
+            adapter.setData(recycleList)
+        })
+
+        floatingActionBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_listRecycle_to_addRecycleFragment)
+        }
+
         return view
     }
-}
+    }
+

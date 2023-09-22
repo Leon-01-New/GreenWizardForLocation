@@ -18,15 +18,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.greenwizard.R
-import com.example.greenwizard.model.Report
+import com.example.greenwizard.model.RecyclePoint
 import com.example.greenwizard.viewmodel.LocationViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class UpdateReport : Fragment() {
+class UpdateRecycleFragment : Fragment() {
 
     private lateinit var mNewsViewModel: LocationViewModel
 
-    private val args by navArgs<UpdateReportArgs>()
+    private val args by navArgs<UpdateRecycleFragmentArgs>()
     // Initialize ViewModel
     private val newsViewModel: LocationViewModel by viewModels()
 
@@ -35,34 +35,30 @@ class UpdateReport : Fragment() {
 
     // Initialize URI to store the selected image URI
     private var selectedImageUri: Uri? = null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_update_report, container, false)
+        val view = inflater.inflate(R.layout.fragment_update_recycle, container, false)
 
         // Initialize mNewsViewModel
         mNewsViewModel = ViewModelProvider(this).get(LocationViewModel::class.java)
 
         val updateaddress = view.findViewById<EditText>(R.id.editTextAddress)
-        val updatedescription = view.findViewById<EditText>(R.id.editdescription)
-        val updatetypeofWaste = view.findViewById<EditText>(R.id.edittypeofWaste)
+        val updatename = view.findViewById<EditText>(R.id.editname)
         val updateBtn = view.findViewById<Button>(R.id.updateBtn)
         updateImg = view.findViewById(R.id.updateImg) // Initialize your ImageView
         val deleteBtn = view.findViewById<FloatingActionButton>(R.id.deleteBtn)
-        val updateStatusBtn = view.findViewById<Button>(R.id.updateStatusBtn)
 
         // Load the existing data
-        updateaddress.setText(args.currentReport.address)
-        updatedescription.setText(args.currentReport.description)
-        updatetypeofWaste.setText(args.currentReport.typeofWaste)
+        updatename.setText(args.currentRecycle.name)
+        updateaddress.setText(args.currentRecycle.address)
 
         // Load and display the existing image if available
-        if (!args.currentReport.imagePath.isNullOrEmpty()) {
-            selectedImageUri = Uri.parse(args.currentReport.imagePath)
+        if (!args.currentRecycle.imagePath.isNullOrEmpty()) {
+            selectedImageUri = Uri.parse(args.currentRecycle.imagePath)
             updateImg.setImageURI(selectedImageUri)
         }
 
@@ -84,19 +80,18 @@ class UpdateReport : Fragment() {
         updateBtn.setOnClickListener() {
 
             val location = updateaddress.text.toString()
-            val description = updatedescription.text.toString()
-            val typeofWaste = updatetypeofWaste.text.toString()
+            val description = updatename.text.toString()
 
-            if (inputCheck(description, typeofWaste)) {
+            if (inputCheck(location, description)) {
                 // Check if an image is selected
                 val imagePath = selectedImageUri?.toString() // Get the selected image URI as a string
                 // Create news Object
-                val updatedNews = Report(args.currentReport.id, location, description, typeofWaste, System.currentTimeMillis(), imagePath ?: "")
+                val updatedNews = RecyclePoint(args.currentRecycle.id, location, description, imagePath ?: "")
                 // Update data to ViewModel
-                newsViewModel.updateReport(updatedNews)
+                newsViewModel.updateRecycle(updatedNews)
                 Toast.makeText(requireContext(), "Successfully Updated", Toast.LENGTH_LONG).show()
                 // Navigate Back
-                findNavController().navigate(R.id.action_updateReport_to_listReport)
+                findNavController().navigate(R.id.action_updateRecycleFragment_to_listRecycle)
             } else {
                 Toast.makeText(requireContext(), "Please Fill Out All Fields", Toast.LENGTH_LONG).show()
             }
@@ -106,46 +101,27 @@ class UpdateReport : Fragment() {
             val builder = AlertDialog.Builder(requireContext())
             builder.setPositiveButton("Yes") { _, _ ->
                 // Use your ViewModel to delete the news using the existing args
-                mNewsViewModel.deleteReport(args.currentReport)
+                mNewsViewModel.deleteRecycle(args.currentRecycle)
                 Toast.makeText(
                     requireContext(),
-                    "Successfully Removed: ${args.currentReport.description}",
+                    "Successfully Removed: ${args.currentRecycle.name}",
                     Toast.LENGTH_LONG
                 ).show()
-                findNavController().navigate(R.id.action_updateReport_to_listReport)
+                findNavController().navigate(R.id.action_updateRecycleFragment_to_listRecycle)
             }
             builder.setNegativeButton("No") { _, _ ->
                 // Do nothing or dismiss the dialog
             }
-            builder.setTitle("Delete ${args.currentReport.description}?")
-            builder.setMessage("Are you sure you want to delete ${args.currentReport.description}?")
-            builder.create().show()
-        }
-
-        updateStatusBtn.setOnClickListener {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setPositiveButton("Yes") { _, _ ->
-                // Use your ViewModel to delete the news using the existing args
-                mNewsViewModel.deleteReport(args.currentReport)
-                Toast.makeText(
-                    requireContext(),
-                    "Successfully Update: ${args.currentReport.description}",
-                    Toast.LENGTH_LONG
-                ).show()
-                findNavController().navigate(R.id.action_updateReport_to_listReport)
-            }
-            builder.setNegativeButton("No") { _, _ ->
-                // Do nothing or dismiss the dialog
-            }
-            builder.setTitle("Update status ${args.currentReport.description}?")
-            builder.setMessage("Are you sure you want to update the status of ${args.currentReport.description}?")
+            builder.setTitle("Delete ${args.currentRecycle.name}?")
+            builder.setMessage("Are you sure you want to delete ${args.currentRecycle.name}?")
             builder.create().show()
         }
 
         return view
+
     }
 
-    private fun inputCheck(description: String, typeofWaste: String): Boolean {
-        return !(TextUtils.isEmpty(description) || TextUtils.isEmpty(typeofWaste))
+    private fun inputCheck(name: String, address: String): Boolean {
+        return !(TextUtils.isEmpty(name) || TextUtils.isEmpty(address))
     }
 }
